@@ -6,12 +6,12 @@ import { MessagePattern } from '@nestjs/microservices';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @MessagePattern('addDataToStream')
-  addDataToStream(message: any): string {
-    console.log('Received message:', message);
-    this.appService.sendToStream(message);
-    return `Message received and processed: ${JSON.stringify(message)}`;
-  }
+  // @MessagePattern('addDataToStream')
+  // addDataToStream(message: any): string {
+  //   console.log('Received message:', message);
+  //   this.appService.sendToStream(message);
+  //   return `Message received and processed: ${JSON.stringify(message)}`;
+  // }
 
   // Endpoint to manually start stream consumption (if you want manual control)
   @MessagePattern('start')

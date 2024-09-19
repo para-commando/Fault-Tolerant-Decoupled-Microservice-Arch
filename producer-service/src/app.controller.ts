@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Inject, OnModuleInit, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ClientKafka, ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { RedisClientType, createClient } from 'redis';
 
 @Controller()
 export class AppController implements OnModuleInit{
@@ -12,9 +13,12 @@ export class AppController implements OnModuleInit{
   }
 
   private client: ClientProxy;
+  private redisClient: RedisClientType;
 
-  constructor( @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka) {
+  constructor( @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
+) {
 
+    this.redisClient = createClient();
 
     // Create a TCP client to communicate with the consumer service
     this.client = ClientProxyFactory.create({
@@ -28,8 +32,9 @@ export class AppController implements OnModuleInit{
   }
   async onModuleInit() {
     this.kafkaClient.subscribeToResponseOf('my-topic');
-    await this.kafkaClient.connect();
-  }
+    await this.redisClient.connect();
+    console.log('Redis connected successfully!');
+    }
 
   @Post('send-kafka')
   async sendMessage(@Body() message:any) {
@@ -49,15 +54,13 @@ export class AppController implements OnModuleInit{
   async sendToConsumer(@Body() message:any): Promise<any> {
 
     // Send the message to the consumer service
-    try {
-      const response = await this.client.send('addDataToStream', message).toPromise();
+      try {
+         await this.redisClient.xAdd('mystream2', '*', message);
+         console.log('Data sent to Redis stream:', message);
+         return 'success'
+       } catch (error) {
+         console.error('Error sending data to Redis stream:', error);
+       }
 
-      console.log("🎖️🎖️  ⚔️  file: app.controller.ts:35  ⚔️  AppController  ⚔️  sendToConsumer  ⚔️  response 🎖️🎖️", response)
-
-      return response;  // Response from consumer
-    } catch (error) {
-      console.error('Error sending message to consumer:', error);
-      throw error;
-    }
   }
 }

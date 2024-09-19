@@ -18,15 +18,15 @@ export class AppService implements OnModuleInit {
       console.error('Error connecting to Redis:', error);
     }
   }
-  async sendToStream(data: Record<string, string>) {
-    try {
-     const asd = await this.redisClient.xAdd('mystream2', '*', data);
-      console.log('Data sent to Redis stream:', data);
-      return 'success'
-    } catch (error) {
-      console.error('Error sending data to Redis stream:', error);
-    }
-  }
+  // async sendToStream(data: Record<string, string>) {
+  //   try {
+  //    const asd = await this.redisClient.xAdd('mystream2', '*', data);
+  //     console.log('Data sent to Redis stream:', data);
+  //     return 'success'
+  //   } catch (error) {
+  //     console.error('Error sending data to Redis stream:', error);
+  //   }
+  // }
   async consumeStream() {
     let lastId = '0'; // Start with the first message or from the last acknowledged ID
 
@@ -40,7 +40,7 @@ export class AppService implements OnModuleInit {
           { BLOCK: 5000, COUNT: 10 }
         );
 
-        console.log("🎖️🎖️  ⚔️  file: app.service.ts:43  ⚔️  AppService  ⚔️  consumeStream  ⚔️  messages 🎖️🎖️", messages)
+        console.log("🎖️🎖️  ⚔️  file: app.service.ts:43  ⚔️  AppService  ⚔️  consumeStream  ⚔️  messages 🎖️🎖️", JSON.stringify(messages))
 
 
         // Handle pending messages
