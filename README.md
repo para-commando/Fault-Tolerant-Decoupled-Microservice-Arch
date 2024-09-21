@@ -1,13 +1,55 @@
-# Fault-Tolerant Decoupled Microservice Architecture
+# ⚙️ **Fault-Tolerant Decoupled Microservice Architecture**
 
-## Overview
-This project implements a fault-tolerant and decoupled microservice architecture using Kafka and Redis Streams. The architecture is built with NestJS and comprises three main services, In Nest, a microservice is fundamentally an application that uses a different transport layer than HTTP. Nest supports several built-in transport layer implementations, called transporters, which are responsible for transmitting messages between different microservice instances. Most transporters natively support both request-response and event-based message styles. This project demonstrates kafka and TCP as transporters:
+## 🚀 **Overview**
 
-Producer Service: This service exposes endpoints to trigger inputs to the microservices comprising kafka (kakfa is the transport layer of choice) and redis stream (TCP as transport layer).
+This project demonstrates a **fault-tolerant** and **decoupled microservice architecture** using **Kafka** and **Redis Streams**. Built with **NestJS**, it showcases how microservices can communicate through various transport layers like **Kafka** (for event-driven communication) and **TCP**. 
 
-Kafka Consumer Service: This service has its transport layer protocol set as Kafka, along with the event listeners to fetch the pending list of messages from a topic, and acknowledge them through a particular consumer group, using the kafka server which is running in docker container which acts as a broker. Lets say this service has crashed or was inactive, even in that case if producer service adds some messages to the topic, it can be processed and acknowledged once this kafka consumer service is up and running, this is one of the use case making it loosely coupled and fault tolerant.
+In **NestJS**, a microservice is an application that uses a different transport layer from HTTP. Nest supports several built-in transport layer implementations (called **transporters**) for transmitting messages between microservices. These transporters natively support both **request-response** and **event-based messaging styles**. 
 
-Redis Stream Consumer Service: This service is accessible using Transmission Control Protocol, which listens to a specific topic or message pattern defined by the decorator @MessagePattern. Similar to kafka consumer service's design even this service supports "fire and forget" messaging architecture i.e lets say that this service was down due to some reason and from producer service we added some messages to a specific topic which is listened to in this redis consumer service, then all those messages are recovered from the topic and acknowledged post processing those this makes it fault tolerant.
+This project implements two main transporters: **Kafka** and **TCP**, providing a flexible architecture for different use cases.
+
+---
+
+## 🏗️ **Key Components**
+
+### 1. **Producer Service**
+- The **Producer Service** exposes **HTTP endpoints** to trigger events that are pushed to Kafka and Redis Stream topics.
+- **Transport Layers**:
+  - **Kafka**: Used to send messages to the Kafka broker.
+  - **TCP**: Used for sending messages to the Redis Stream.
+  
+**Use Case**: 
+- When the producer sends messages to a topic in Kafka or Redis, these messages will be queued even if the consumer services are down. Once the consumers come back online, they can **process** and **acknowledge** these messages, making the system **fault-tolerant**.
+
+---
+
+### 2. **Kafka Consumer Service**
+- The **Kafka Consumer Service** uses **Kafka** as the transport layer protocol.
+- It listens to a **specific Kafka topic** and retrieves the **pending messages** through a particular **consumer group**. The Kafka broker is managed using a **Docker container**.
+  
+**Fault-Tolerance**: 
+- If this service crashes or becomes inactive, the producer can still add messages to the topic. Once the consumer service is back online, it can **process** and **acknowledge** the pending messages, ensuring **loose coupling** and **fault tolerance**.
+
+📹 **Demo**:  
+
+
+https://github.com/user-attachments/assets/529f814b-a6b3-4280-a0c4-6e2ec9aac442
+
+
+---
+
+### 3. **Redis Stream Consumer Service**
+- The **Redis Stream Consumer Service** uses **TCP** as its transport layer protocol.
+- It listens for a specific **topic/message pattern** defined by the `@MessagePattern` decorator.
+  
+**Fault-Tolerance**:
+- Similar to the Kafka consumer, if this service is down, messages from the producer will still be queued. Once the service comes back online, it will **recover** and **process** those messages, making the system **fault-tolerant**.
+
+📹 **Demo**:  
+
+
+https://github.com/user-attachments/assets/55a3e44f-1afb-43d9-aea8-2dac5312d43d
+
 
 
 ## Project Structure
