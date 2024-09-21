@@ -11,6 +11,6 @@ async function bootstrap() {
   app.enableCors();
 
   await app.listen(3001);
-  console.log('🎖️🎖️  ⚔️  Producer Microservice is listening on TCP 3001 ⚔️ 🎖️🎖️');
+  console.log('🎖️🎖️  ⚔️  Producer Microservice is listening on port 3001 ⚔️ 🎖️🎖️');
 }
 bootstrap();

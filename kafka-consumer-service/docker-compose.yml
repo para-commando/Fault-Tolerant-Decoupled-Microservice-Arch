@@ -19,3 +19,4 @@ services:
       KAFKA_CREATE_TOPICS: "my-topic:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./kafka_data:/var/lib/kafka/data

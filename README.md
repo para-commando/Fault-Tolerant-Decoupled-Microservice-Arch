@@ -7,7 +7,7 @@ Producer Service: This service exposes endpoints to trigger inputs to the micros
 
 Kafka Consumer Service: This service has its transport layer protocol set as Kafka, along with the event listeners to fetch the pending list of messages from a topic, and acknowledge them through a particular consumer group, using the kafka server which is running in docker container which acts as a broker. Lets say this service has crashed or was inactive, even in that case if producer service adds some messages to the topic, it can be processed and acknowledged once this kafka consumer service is up and running, this is one of the use case making it loosely coupled and fault tolerant.
 
-Redis Stream Consumer Service: This service is accessible using Transmission Control Protocol, which listens to a specific topic or message pattern defined by the decorator @MessagePattern.
+Redis Stream Consumer Service: This service is accessible using Transmission Control Protocol, which listens to a specific topic or message pattern defined by the decorator @MessagePattern. Similar to kafka consumer service's design even this service supports "fire and forget" messaging architecture i.e lets say that this service was down due to some reason and from producer service we added some messages to a specific topic which is listened to in this redis consumer service, then all those messages are recovered from the topic and acknowledged post processing those this makes it fault tolerant.
 
 
 ## Project Structure

@@ -20,8 +20,8 @@ async function bootstrap() {
       },
     },
   );
-
+  app.enableShutdownHooks();
   await app.listen();
-  console.log('Kafka consumer microservice is listening');
+  console.log('🎖️🎖️ Kafka consumer microservice is listening 🎖️🎖️');
 }
 bootstrap();

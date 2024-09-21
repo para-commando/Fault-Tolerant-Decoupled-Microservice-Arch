@@ -18,8 +18,10 @@ export class AppController implements OnModuleInit{
   constructor( @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
 ) {
 
-    this.redisClient = createClient();
-
+  this.redisClient = createClient({
+    // url: 'redis://:password@localhost:6379', // if password is required
+    url: 'redis://localhost:6379',
+  });
     // Create a TCP client to communicate with the consumer service
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
@@ -44,9 +46,9 @@ export class AppController implements OnModuleInit{
 
   // Send the serialized message to the topic
   this.kafkaClient.emit('my-topic', serializedMessage);
-  console.log('Message sent to Kafka:', serializedMessage);
+  console.log('Message sent by producer to Kafka topic: my-topic, value: ', serializedMessage);
 
-  return { message: 'Message sent to kafka topic successfully' };
+  return { message: 'Message sent by producer to Kafka topic: my-topic' };
 
   }
   // An endpoint that triggers sending a message to the consumer
