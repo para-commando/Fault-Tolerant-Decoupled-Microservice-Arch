@@ -1,5 +1,5 @@
 {
-  "name": "producer-service",
+  "name": "websockets-service",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -20,16 +20,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^10.4.3",
+    "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
-    "@nestjs/microservices": "^10.4.3",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/platform-socket.io": "^10.4.3",
     "@nestjs/websockets": "^10.4.3",
-    "kafkajs": "^2.2.4",
-    "redis": "^4.7.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1",
-    "socket.io-client": "^4.8.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
